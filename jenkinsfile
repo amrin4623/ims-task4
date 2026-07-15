@@ -1,0 +1,56 @@
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage('Clone Repository') {
+
+            steps {
+
+                git branch: 'main',
+                url: 'YOUR_GITHUB_REPOSITORY'
+
+            }
+
+        }
+
+        stage('Install Backend Dependencies') {
+
+            steps {
+
+                sh '''
+
+                cd backend
+
+                npm install
+
+                '''
+
+            }
+
+        }
+
+        stage('Start Backend') {
+
+            steps {
+
+                sh '''
+
+                cd backend
+
+                pm2 delete app || true
+
+                pm2 start server.js --name app
+
+                pm2 save
+
+                '''
+
+            }
+
+        }
+
+    }
+
+}
