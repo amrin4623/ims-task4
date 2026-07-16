@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
 
 app.get("/users", (req, res) => {
 
-    db.query("SELECT * FROM users", (err, result) => {
+    db.query("SELECT * FROM recipes;", (err, result) => {
 
         if (err) {
             res.send(err);
