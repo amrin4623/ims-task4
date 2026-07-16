@@ -10,7 +10,7 @@ app.get("/", (req, res) => {
     res.send("Backend Running Successfully");
 });
 
-app.get("/users", (req, res) => {
+app.get("/recipes", (req, res) => {
 
     db.query("SELECT * FROM recipes;", (err, result) => {
 
