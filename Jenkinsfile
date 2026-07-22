@@ -10,7 +10,7 @@ pipeline {
             }
         }
 
-        stage('Build Backend') {
+        stage('Install Backend Dependencies') {
             steps {
                 dir('backend') {
                     sh 'npm install'
@@ -18,10 +18,31 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy Frontend') {
             steps {
                 sh '''
-                echo "Deployment Successful"
+                sudo cp -r frontend/* /usr/share/nginx/html/
+                sudo systemctl restart nginx
+                '''
+            }
+        }
+
+        stage('Start Backend') {
+            steps {
+                dir('backend') {
+                    sh '''
+                    pm2 delete backend || true
+                    pm2 start server.js --name backend
+                    pm2 save
+                    '''
+                }
+            }
+        }
+
+        stage('Verification') {
+            steps {
+                sh '''
+                pm2 status
                 '''
             }
         }
